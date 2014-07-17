@@ -1,0 +1,29 @@
+{
+  "name": "superstatic-redirects",
+  "version": "0.1.0",
+  "description": "Superstatic custom redirects middleware",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/ --reporter dot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:divshot/superstatic-redirects.git"
+  },
+  "keywords": [
+    "superstatic",
+    "redirects",
+    "301",
+    "static",
+    "divshot"
+  ],
+  "author": "Divshot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/divshot/superstatic-redirects/issues"
+  },
+  "homepage": "https://github.com/divshot/superstatic-redirects"
+}
