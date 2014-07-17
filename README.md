@@ -52,7 +52,6 @@ app.listen(3000, function (err) {
 ### Basic redirect
 
 ```js
-```js
 var connect = require('connect');
 var redirects = require('superstatic-redirects');
 
