@@ -13,6 +13,7 @@ npm install superstatic-redirects --save
 As a Connect/Express middleware
 
 ```js
+var http = require('http');
 var connect = require('connect');
 var redirects = require('superstatic-redirects');
 
