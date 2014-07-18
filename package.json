@@ -1,7 +1,7 @@
 {
-  "name": "superstatic-redirects",
-  "version": "0.1.0",
-  "description": "Superstatic custom redirects middleware",
+  "name": "redirects",
+  "version": "0.2.0",
+  "description": "Express/Connect middleware for segment-able url redirects",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:divshot/superstatic-redirects.git"
+    "url": "git@github.com:divshot/redirects.git"
   },
   "keywords": [
     "superstatic",
@@ -23,9 +23,9 @@
   "author": "Divshot",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/divshot/superstatic-redirects/issues"
+    "url": "https://github.com/divshot/redirects/issues"
   },
-  "homepage": "https://github.com/divshot/superstatic-redirects",
+  "homepage": "https://github.com/divshot/redirects",
   "devDependencies": {
     "chai": "^1.9.1",
     "connect": "^3.0.2",

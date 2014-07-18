@@ -1,21 +1,19 @@
-# superstatic-redirects
+# redirects
 
-Superstatic custom redirects middleware
+Express/Connect middleware for segment-able url redirects
 
 ## Install
 
 ```
-npm install superstatic-redirects --save
+npm install redirects --save
 ```
 
 ## Usage
 
-As a Connect/Express middleware
-
 ```js
 var http = require('http');
 var connect = require('connect');
-var redirects = require('superstatic-redirects');
+var redirects = require('redirects');
 
 var app = connect();
 
@@ -28,33 +26,13 @@ http.createServer(app).listen(3000, function (err) {
 });
 ```
 
-In Superstatic
-
-```js
-var superstatic = require('superstatic');
-
-var app = superstatic({
-  // this config object can also just be the superstatic.json file
-  // See https://github.com/divshot/superstatic#configuration
-  config: {
-    redirects: {
-      '/some-url': '/redirect-url'
-    }
-  }
-});
-
-app.listen(3000, function (err) {
-  
-});
-```
-
 ## Usage Options
 
 ### Basic redirect
 
 ```js
 var connect = require('connect');
-var redirects = require('superstatic-redirects');
+var redirects = require('redirects');
 
 var app = connect();
 
@@ -71,7 +49,7 @@ http.createServer(app).listen(3000, function (err) {
 
 ```js
 var connect = require('connect');
-var redirects = require('superstatic-redirects');
+var redirects = require('redirects');
 
 var app = connect();
 
@@ -93,7 +71,7 @@ Any value in the url that begins with a `:` will be considered a segment. This s
 
 ```js
 var connect = require('connect');
-var redirects = require('superstatic-redirects');
+var redirects = require('redirects');
 
 var app = connect();
 
