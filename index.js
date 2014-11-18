@@ -1,12 +1,15 @@
 var isObject = require('lodash.isobject');
 var globject = require('globject');
-var slash = require('slasher');
 var pathematics = require('pathematics');
+var toxic = require('toxic');
+var slasher = require('glob-slasher');
 
 module.exports = function (redirectRouteMap) {
+  
   return function (req, res, next) {
+    
     var statusCode = 301;
-    var normalizedRedirects = slash(redirectRouteMap);
+    var normalizedRedirects = slasher(redirectRouteMap);
     var redirects = globject(normalizedRedirects);
     var redirectUrl = redirects(req.url);
     var redirectObj;
@@ -25,7 +28,9 @@ module.exports = function (redirectRouteMap) {
       statusCode = redirectObj.status || statusCode;
     }
     
-    if (!redirectUrl) return next();
+    if (!redirectUrl) {
+      return next();
+    }
     
     res.writeHead(statusCode, {Location: redirectUrl});
     res.end();

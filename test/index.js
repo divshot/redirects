@@ -1,5 +1,4 @@
 var redirect = require('../');
-var expect = require('chai').expect;
 var connect = require('connect');
 var request = require('supertest');
 
@@ -64,6 +63,19 @@ describe('redirect middleware', function () {
     
     request(app)
       .get('/source')
+      .expect(301)
+      .expect('location', '/redirect')
+      .end(done);
+  });
+  
+  it('redirects using glob negation', function (done) {
+    var app = connect()
+      .use(redirect({
+        '!source': '/redirect' // No slash
+      }));
+    
+    request(app)
+      .get('/anthing')
       .expect(301)
       .expect('location', '/redirect')
       .end(done);
