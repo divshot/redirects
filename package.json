@@ -1,6 +1,6 @@
 {
   "name": "redirects",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Express/Connect middleware for segment-able url redirects",
   "main": "index.js",
   "directories": {
@@ -34,7 +34,8 @@
   "dependencies": {
     "glob-slasher": "^1.0.0",
     "globject": "^1.0.0",
-    "lodash.isobject": "^2.4.1",
+    "is-url": "^1.2.0",
+    "lodash.isobject": "^3.0.0",
     "pathematics": "^0.1.1",
     "toxic": "^1.0.0"
   }

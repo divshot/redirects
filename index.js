@@ -3,6 +3,7 @@ var globject = require('globject');
 var pathematics = require('pathematics');
 var toxic = require('toxic');
 var slasher = require('glob-slasher');
+var isUrl = require('is-url');
 
 module.exports = function (redirectRouteMap) {
   
@@ -32,7 +33,17 @@ module.exports = function (redirectRouteMap) {
       return next();
     }
     
+    // Remove leading slash of a url
+    redirectUrl = formatExternalUrl(redirectUrl);
+    
     res.writeHead(statusCode, {Location: redirectUrl});
     res.end();
   };
 };
+
+function formatExternalUrl (u) {
+  
+  var cleaned = u.replace('/http:/', 'http://');
+  
+  return (isUrl(cleaned)) ? cleaned : u;
+}

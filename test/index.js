@@ -110,4 +110,16 @@ describe('redirect middleware', function () {
       .end(done);
   });
   
+  it('redirects to external url', function (done) {
+    var app = connect()
+      .use(redirect({
+        '/source': 'http://redirectedto.com'
+      }));
+    
+    request(app)
+      .get('/source')
+      .expect(301)
+      .expect('Location', 'http://redirectedto.com')
+      .end(done);
+  });
 });
