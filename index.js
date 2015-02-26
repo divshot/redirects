@@ -43,7 +43,9 @@ module.exports = function (redirectRouteMap) {
 
 function formatExternalUrl (u) {
   
-  var cleaned = u.replace('/http:/', 'http://');
+  var cleaned = u
+    .replace('/http:/', 'http://')
+    .replace('/https:/', 'https://');
   
   return (isUrl(cleaned)) ? cleaned : u;
 }

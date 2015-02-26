@@ -122,4 +122,17 @@ describe('redirect middleware', function () {
       .expect('Location', 'http://redirectedto.com')
       .end(done);
   });
+  
+  it('redirects to external url over https', function (done) {
+    var app = connect()
+      .use(redirect({
+        '/source': 'https://redirectedto.com'
+      }));
+    
+    request(app)
+      .get('/source')
+      .expect(301)
+      .expect('Location', 'https://redirectedto.com')
+      .end(done);
+  });
 });
