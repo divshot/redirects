@@ -1,51 +1,88 @@
 var isObject = require('lodash.isobject');
-var globject = require('globject');
+var isArray = require('lodash.isarray');
+var minimatch = require('minimatch');
 var pathematics = require('pathematics');
-var toxic = require('toxic');
 var slasher = require('glob-slasher');
 var isUrl = require('is-url');
+var pathToRegexp = require('path-to-regexp');
 
-module.exports = function (redirectRouteMap) {
-  
+module.exports = function (config) {
+  if (isArray(config)) {
+    var redirects = config;
+  } else if (isObject(config)) {
+    // handle legacy object map format
+    var redirects = [];
+    for (var source in config) {
+      if (isObject(config[source])) {
+        redirects.push({
+          source: source,
+          destination: config[source].url,
+          type: config[source].status || 301
+        });
+      } else {
+        redirects.push({
+          source: source,
+          destination: config[source],
+          type: 301
+        });
+      }
+    }
+  } else {
+    throw new Error("Redirects provided in an unrecognized format");
+  }
+
+  for (var i = 0; i < redirects.length; i++) {
+    // normalize the sources with leading slashes
+    redirects[i].source = slasher(redirects[i].source);
+    if (redirects[i].destination.indexOf(":") >= 0) {
+      redirects[i].regexpKeys = [];
+      redirects[i].regexp = pathToRegexp(redirects[i].source, redirects[i].regexpKeys);
+      redirects[i].regexpCompiled = pathToRegexp.compile(redirects[i].destination);
+    }
+  }
+
+  var matcher = function(url) {
+    for (var i = 0; i < redirects.length; i++) {
+      if (redirects[i].regexp) var regexpMatch = redirects[i].regexp.exec(url);
+
+      if (regexpMatch) {
+        var params = {};
+        for (var j = 0; j < redirects[i].regexpKeys.length; j++) {
+          params[redirects[i].regexpKeys[j].name] = regexpMatch[j + 1];
+        }
+        return {
+          type: redirects[i].type,
+          destination: redirects[i].regexpCompiled(params)
+        }
+      } else if (minimatch(url,redirects[i].source)) {
+        return redirects[i];
+      }
+    }
+    return null;
+  }
+
   return function (req, res, next) {
-    
-    var statusCode = 301;
-    var normalizedRedirects = slasher(redirectRouteMap);
-    var redirects = globject(normalizedRedirects);
-    var redirectUrl = redirects(req.url);
+
+    var match = matcher(req.url);
     var redirectObj;
-    
-    // redirect with segments
-    if (!redirectUrl) {
-      var parsedUrl = pathematics.withMeta(normalizedRedirects, req.url);
-      redirectUrl = parsedUrl.url;
-      statusCode = (parsedUrl.meta && parsedUrl.meta.status) ? parsedUrl.meta.status : statusCode;
-    }
-    
-    // redrect from config object
-    if (isObject(redirectUrl)) {
-      redirectObj = redirectUrl;
-      redirectUrl = redirectObj.url;
-      statusCode = redirectObj.status || statusCode;
-    }
-    
-    if (!redirectUrl) {
+
+    if (!match) {
       return next();
     }
-    
+
     // Remove leading slash of a url
-    redirectUrl = formatExternalUrl(redirectUrl);
-    
-    res.writeHead(statusCode, {Location: redirectUrl});
+    var redirectUrl = formatExternalUrl(match.destination);
+
+    res.writeHead(match.type, {Location: redirectUrl});
     res.end();
   };
 };
 
 function formatExternalUrl (u) {
-  
+
   var cleaned = u
     .replace('/http:/', 'http://')
     .replace('/https:/', 'https://');
-  
+
   return (isUrl(cleaned)) ? cleaned : u;
 }
