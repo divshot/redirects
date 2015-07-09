@@ -37,8 +37,6 @@
     "lodash.isarray": "^3.0.0",
     "lodash.isobject": "^3.0.0",
     "minimatch": "^2.0.8",
-    "path-to-regexp": "^1.2.0",
-    "pathematics": "^0.1.1",
-    "toxic": "^1.0.0"
+    "path-to-regexp": "^1.2.0"
   }
 }
